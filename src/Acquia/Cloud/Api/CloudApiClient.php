@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @file An Acquia CloudApi Client
+ * @file An Acquia CloudApiClient implementation
  *
  * NOTICE: This source code was derived from acquia-sdk-php (v0.3.3), covered
  * by the GPLv3 software license, on 2 Dec 2013.
@@ -9,7 +9,7 @@
  * @see https://github.com/cpliakas/acquia-sdk-php/blob/0.3.3/LICENSE.txt
  */
 
-class AcquiaCloudApiClient
+class Acquia_Cloud_Api_CloudApiClient
 {
     const BASE_PATH = '/v1';
 
@@ -29,7 +29,7 @@ class AcquiaCloudApiClient
      *
      * @param array $config Login credentials
      *
-     * @return AcquiaCloudApiClient
+     * @return Acquia_Cloud_Api_CloudApiClient
      *
      * @throws RuntimeException
      */
@@ -259,20 +259,20 @@ class AcquiaCloudApiClient
     }
 
     /**
-     * @return AcquiaCloudApiResponseSites
+     * @return Acquia_Cloud_Api_Response_Sites
      *
      * @throws RuntimeException
      */
     public function sites()
     {
         $data = $this->sendGet('{+base_path}/sites.json');
-        return new AcquiaCloudApiResponseSites($data);
+        return new Acquia_Cloud_Api_Response_Sites($data);
     }
 
     /**
      * @param string $site
      *
-     * @return AcquiaCloudApiResponseSite
+     * @return Acquia_Cloud_Api_Response_Site
      *
      * @throws RuntimeException
      */
@@ -280,13 +280,13 @@ class AcquiaCloudApiClient
     {
         $variables = array('site' => $site);
         $data = $this->sendGet('{+base_path}/sites/{site}.json', $variables);
-        return new AcquiaCloudApiResponseSite($data);
+        return new Acquia_Cloud_Api_Response_Site($data);
     }
 
     /**
      * @param string $site
      *
-     * @return AcquiaCloudApiResponseEnvironments
+     * @return Acquia_Cloud_Api_Response_Environments
      *
      * @throws RuntimeException
      */
@@ -294,14 +294,14 @@ class AcquiaCloudApiClient
     {
         $variables = array('site' => $site);
         $data = $this->sendGet('{+base_path}/sites/{site}/envs.json', $variables);
-        return new AcquiaCloudApiResponseEnvironments($data);
+        return new Acquia_Cloud_Api_Response_Environments($data);
     }
 
     /**
      * @param string $site
      * @param string $env
      *
-     * @return AcquiaCloudApiResponseEnvironment
+     * @return Acquia_Cloud_Api_Response_Environment
      *
      * @throws RuntimeException
      */
@@ -312,7 +312,7 @@ class AcquiaCloudApiClient
             'env' => $env,
         );
         $data = $this->sendGet('{+base_path}/sites/{site}/envs/{env}.json', $variables);
-        return new AcquiaCloudApiResponseEnvironment($data);
+        return new Acquia_Cloud_Api_Response_Environment($data);
     }
 
     /**
@@ -338,7 +338,7 @@ class AcquiaCloudApiClient
      * @param string $site
      * @param string $env
      *
-     * @return AcquiaCloudApiResponseServers
+     * @return Acquia_Cloud_Api_Response_Servers
      *
      * @throws RuntimeException
      */
@@ -349,7 +349,7 @@ class AcquiaCloudApiClient
             'env' => $env,
         );
         $data = $this->sendGet('{+base_path}/sites/{site}/envs/{env}/servers.json', $variables);
-        return new AcquiaCloudApiResponseServers($data);
+        return new Acquia_Cloud_Api_Response_Servers($data);
     }
 
     /**
@@ -357,7 +357,7 @@ class AcquiaCloudApiClient
      * @param string $env
      * @param string $server
      *
-     * @return AcquiaCloudApiResponseServer
+     * @return Acquia_Cloud_Api_Response_Server
      *
      * @throws RuntimeException
      */
@@ -369,7 +369,7 @@ class AcquiaCloudApiClient
             'server' => $server,
         );
         $data = $this->sendGet('{+base_path}/sites/{site}/envs/{env}/servers/{server}.json', $variables);
-        return new AcquiaCloudApiResponseServer($data);
+        return new Acquia_Cloud_Api_Response_Server($data);
     }
 
     /**
@@ -530,7 +530,7 @@ class AcquiaCloudApiClient
     /**
      * @param string $site
      *
-     * @return AcquiaCloudApiResponseDatabases
+     * @return Acquia_Cloud_Api_Response_Databases
      *
      * @throws RuntimeException
      */
@@ -538,14 +538,14 @@ class AcquiaCloudApiClient
     {
         $variables = array('site' => $site);
         $data = $this->sendGet('{+base_path}/sites/{site}/dbs.json', $variables);
-        return new AcquiaCloudApiResponseDatabases($data);
+        return new Acquia_Cloud_Api_Response_Databases($data);
     }
 
     /**
      * @param string $site
      * @param string $db
      *
-     * @return AcquiaCloudApiResponseDatabase
+     * @return Acquia_Cloud_Api_Response_Database
      *
      * @throws RuntimeException
      */
@@ -556,7 +556,7 @@ class AcquiaCloudApiClient
             'db' => $db,
         );
         $data = $this->sendGet('{+base_path}/sites/{site}/dbs/{db}.json', $variables);
-        return new AcquiaCloudApiResponseDatabase($data);
+        return new Acquia_Cloud_Api_Response_Database($data);
     }
 
     /**
