@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @file
+ *   Acquia SDK module loads class files into the registry.
+ */
+
+/**
+ * Implements function hook_registry_files_alter().
+ */
+function acquia_sdk_registry_files_alter(&$files, $modules) {
+
+  $class_path = drupal_get_path('module', 'acquia_sdk') .'/src';
+  $class_files = file_scan_directory($class_path, '/\.(inc|php)$/');
+  foreach (array_keys($class_files) as $file) {
+    $files[$file] = array(
+        'module' => 'acquia_sdk',
+        'weight' => 0,
+    );
+  }
+}
+

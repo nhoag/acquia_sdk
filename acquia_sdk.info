@@ -1,0 +1,7 @@
+name = Acquia SDK
+description = "A set of classes for integrating code with Acquia products and services."
+package = Acquia Network Connector
+core = 7.x
+files[] = acquia_sdk.module
+php = 5.2
+
