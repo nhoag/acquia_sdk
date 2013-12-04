@@ -49,8 +49,7 @@ class Acquia_Common_ClassLoader
      */
     public function loadClass($class_name)
     {
-        $name_space = explode('_', $class_name);
-        if (count($name_space) && $name_space[0] == $this->_name_space) {
+        if (strpos($class_name, $this->_name_space) === 0) {
             $class_path = str_replace('_', DIRECTORY_SEPARATOR, $class_name);
             require "{$this->_include_path}/{$class_path}{$this->_file_extension}";
         }
