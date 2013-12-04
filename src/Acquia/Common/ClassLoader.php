@@ -51,11 +51,21 @@ class Acquia_Common_ClassLoader
     {
         fprintf(STDERR, "Looking for $class_name around {$this->_name_space}\n");
         if (strpos($class_name, $this->_name_space) === 0) {
+            fprintf(STDERR, "Still looking for $class_name around {$this->_name_space}\n");
             $class_path = str_replace('_', DIRECTORY_SEPARATOR, $class_name);
+            fprintf(STDERR, "Almost found $class_name at path: $class_path\n");
             $class_file = "{$this->_include_path}/{$class_path}{$this->_file_extension}";
+            fprintf(STDERR, "Nearly found $class_name at path: $class_file\n");
             if (file_exists($class_file)) {
+                fprintf(STDERR, "Loading: $class_file\n");
                 require_once $class_file;
             }
+            else {
+                fprintf(STDERR, "Loading File: $class_file FAILED!\n");
+            }
+        }
+        else {
+            fprintf(STDERR, "Loading Class: $class_name FAILED!\n");
         }
     }
 }
