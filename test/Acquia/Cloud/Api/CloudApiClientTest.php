@@ -14,4 +14,14 @@ class Acquia_Test_Cloud_Api_CloudApiClientTest extends PHPUnit_Framework_TestCas
             ));
     }
 
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testRequirePassword()
+    {
+        Acquia_Cloud_Api_CloudApiClient::factory(array(
+                'username' => 'test-username',
+            ));
+    }
+
 }
