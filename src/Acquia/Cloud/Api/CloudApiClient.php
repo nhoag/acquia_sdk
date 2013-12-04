@@ -17,7 +17,6 @@ class Acquia_Cloud_Api_CloudApiClient
     protected $config;
     protected $headers;
 
-
     public function __construct($base_url, $config)
     {
         $this->base_url = $base_url;
@@ -28,12 +27,13 @@ class Acquia_Cloud_Api_CloudApiClient
      * Factory method to create a new CloudApiClient connection.
      *
      * @param array $config Login credentials
+     * @param string $factory_class_name (subclasses need to provide this, as "static" isn't backward compatible with PHP 5.2)
      *
      * @return Acquia_Cloud_Api_CloudApiClient
      *
      * @throws RuntimeException
      */
-    public static function factory($config = array())
+    public static function factory($config = array(), $factory_class_name = __CLASS__)
     {
         $required = array(
             'base_url',
@@ -52,7 +52,9 @@ class Acquia_Cloud_Api_CloudApiClient
               throw new RuntimeException("Missing required configuration parameter '{$required_key}'.");
           }
         }
-        $client = new static($config['base_url'], $config);
+
+        // PHP 5.3+ can simply do $client = new static($config['base_url'], $config);
+        $client = new $factory_class_name($config['base_url'], $config);
         $curl_version = curl_version();
         $client->setDefaultHeaders(array(
             'Content-Type' => 'application/json; charset=utf-8',

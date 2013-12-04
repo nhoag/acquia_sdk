@@ -11,7 +11,7 @@
 
     <testsuites>
        <testsuite name="Acquia SDK module">
-         <directory suffix="Test.php">test/Acquia/Test</directory>
+         <directory suffix="Test.php">test</directory>
        </testsuite>
     </testsuites>
 
