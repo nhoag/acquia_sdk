@@ -48,7 +48,7 @@ class Acquia_Cloud_Api_CloudApiClient
 
         $config = array_merge($defaults, $config);
         foreach($required as $required_key) {
-          if (!isset($required_key) || empty($required_key)) {
+          if (!(isset($config[$required_key]) && !empty($config[$required_key]))) {
               throw new RuntimeException("Missing required configuration parameter '{$required_key}'.");
           }
         }
