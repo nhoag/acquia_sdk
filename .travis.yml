@@ -7,7 +7,7 @@ php:
   - "5.2"
 
 before_script:
-  - echo "TRAVIS_PHP_VERSION: $TRAVIS_PHP_VERSION"
+  - echo 'tv' $TRAVIS_PHP_VERSION
   - if [[ "$TRAVIS_PHP_VERSION" != "5.2" ]]; then cp composer.json.dist composer.json; fi
   - if [[ "$TRAVIS_PHP_VERSION" != "5.2" ]]; then curl -s http://getcomposer.org/installer | php; fi
   - if [[ "$TRAVIS_PHP_VERSION" != "5.2" ]]; then php composer.phar install --dev --no-interaction; fi
