@@ -2,8 +2,8 @@
 
 class Acquia_Test_Cloud_Api_Response_EnvironmentTest extends PHPUnit_Framework_TestCase {
 
-    private $class_name = 'Acquia_Cloud_Api_Response_Environment';
-    private $data_value = 'data_value';
+    protected $class_name = 'Acquia_Cloud_Api_Response_Environment';
+    protected $data_value = 'data_value';
 
     public function testResponseConstructorWithArray()
     {
@@ -15,8 +15,7 @@ class Acquia_Test_Cloud_Api_Response_EnvironmentTest extends PHPUnit_Framework_T
 
     public function testResponseConstructorWithString()
     {
-        $data = $this->data_value;
-        $response = new $this->class_name($data);
+        $response = new $this->class_name($this->data_value);
         $this->assertEquals($response['name'], $this->data_value);
         $this->assertEquals("{$response}", $this->data_value);
     }
