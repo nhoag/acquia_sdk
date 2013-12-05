@@ -13,7 +13,7 @@ class Acquia_Common_ClassLoader
     private $_file_extension = '.php';
 
     /**
-     * Creates a new <tt>Acquia_Common_PsrClassLoader</tt> that loads classes of the
+     * Creates a new <tt>Acquia_Common_ClassLoader</tt> that loads classes of the
      * specified namespace.
      *
      * @param string $name_space The namespace to use.
