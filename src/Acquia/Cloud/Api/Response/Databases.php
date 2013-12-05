@@ -18,7 +18,7 @@ class Acquia_Cloud_Api_Response_Databases extends ArrayObject
     public function __construct($dbs)
     {
         foreach ($dbs as $db) {
-            $this[$db['name']] = new Acquia_Cloud_Api_Response_Database($dbs);
+            $this[$db['name']] = new Acquia_Cloud_Api_Response_Database($db);
         }
     }
 }
