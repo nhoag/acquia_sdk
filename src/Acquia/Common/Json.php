@@ -1,8 +1,16 @@
 <?php
 
-namespace Acquia\Common;
+/**
+ * @file
+ * Sites response object for Acquia_Common_Json
+ *
+ * NOTICE: This source code was derived from acquia-sdk-php (v0.3.3), covered
+ * by the GPLv3 software license, on 2 Dec 2013.
+ *
+ * @see https://github.com/cpliakas/acquia-sdk-php/blob/0.3.3/src/Acquia/Common/Json.php
+ */
 
-class Json
+class Acquia_Common_Json
 {
     /**
      * @param mixed $data
@@ -32,4 +40,3 @@ class Json
         return json_decode($json, true);
     }
 }
-

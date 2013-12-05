@@ -239,7 +239,7 @@ class Acquia_Cloud_Api_CloudApiClient
     public function sendPost($path, $variables = array(), $body = null)
     {
         if (!is_string($body)) {
-            $body = drupal_json_encode($body);
+            $body = Acquia_Common_Json::encode($body);
         }
         return $this->post(array($path, $variables), null, $body);
     }
