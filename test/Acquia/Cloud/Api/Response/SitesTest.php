@@ -1,20 +1,20 @@
 <?php
 
-class Acquia_Test_Cloud_Api_Response_DatabasesTest extends PHPUnit_Framework_TestCase {
+class Acquia_Test_Cloud_Api_Response_SitesTest extends PHPUnit_Framework_TestCase {
 
     protected $data_value;
 
     public function __construct() {
         $this->data_value = array(
-            array('name' => 'data:zero'),
-            array('name' => 'data:one'),
-            array('name' => 'data:two')
+            'data:zero',
+            'data:one',
+            'data:two'
         );
     }
 
-    public function testDatabasesResponseConstructor()
+    public function testSitesResponseConstructor()
     {
-        $responses = new Acquia_Cloud_Api_Response_Databases($this->data_value);
+        $responses = new Acquia_Cloud_Api_Response_Sites($this->data_value);
         $iterator = $responses->getIterator();
         while($iterator->valid()) {
             $response = $iterator->current();

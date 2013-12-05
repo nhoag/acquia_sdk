@@ -1,6 +1,6 @@
 <?php
 
-class Acquia_Test_Cloud_Api_Response_DatabasesTest extends PHPUnit_Framework_TestCase {
+class Acquia_Test_Cloud_Api_Response_ServersTest extends PHPUnit_Framework_TestCase {
 
     protected $data_value;
 
@@ -12,9 +12,9 @@ class Acquia_Test_Cloud_Api_Response_DatabasesTest extends PHPUnit_Framework_Tes
         );
     }
 
-    public function testDatabasesResponseConstructor()
+    public function testServersResponseConstructor()
     {
-        $responses = new Acquia_Cloud_Api_Response_Databases($this->data_value);
+        $responses = new Acquia_Cloud_Api_Response_Servers($this->data_value);
         $iterator = $responses->getIterator();
         while($iterator->valid()) {
             $response = $iterator->current();
