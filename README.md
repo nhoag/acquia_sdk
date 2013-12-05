@@ -13,6 +13,7 @@ Adapting code for PHP 5.2
 -------------------------
 In order to make the acquia-sdk-php code backward compatible with PHP 5.2 
 there are a few changes which need to be made to the object-oriented notation.
+
 1. Removal of keywords {namespace} and {use}
    {namespace} and {use} are not available in PHP 5.2, and have been removed.
    In order to preserve PSR-0 compatibility, all classes have been prefixed
