@@ -11,16 +11,16 @@ the focus of this module is on providing Drupal with an interface to
 
 Adapting code for PHP 5.2
 -------------------------
-In order to make the acquia-sdk-php code backward compatible with PHP 5.2 
+In order to make the acquia-sdk-php code backward compatible with PHP 5.2
 there are a few changes which need to be made to the object-oriented notation.
 
-1. Removal of keywords {namespace} and {use}
-   {namespace} and {use} are not available in PHP 5.2, and have been removed.
-   In order to preserve PSR-0 compatibility, all classes have been prefixed
-   with a convention based on the namespace. For example the class
+1. Removal of keywords ```namespace``` and ```use```
+   ```namespace``` and ```use``` are not available in PHP 5.2, and have been
+   removed. In order to preserve PSR-0 compatibility, all classes have been
+   prefixed with a convention based on the namespace. For example the class
    \Acquia\Cloud\Api\CloudApiClient was renamed to Acquia_Cloud_Api_CloudApiClient
 1. Removal of code dependant on Late Static Binding
-   So far this has concerned the use of {new static()} within the factory
+   So far this has concerned the use of ```new static()``` within the factory
    methods of some classes. To work around this for PHP 5.2 the factory
    methods were altered to accept a classname. This means that code
    extending these classes need to override the factory method to inject
