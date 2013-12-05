@@ -7,14 +7,13 @@ php:
   - "5.2"
 
 before_script:
-  - echo 'tv' $TRAVIS_PHP_VERSION
-  - if [[ "$TRAVIS_PHP_VERSION" != "5.2" ]]; then cp composer.json.dist composer.json; else echo 'PHP 5.2 Skipping cp composer.json.dist composer.json'; fi
-  - if [[ "$TRAVIS_PHP_VERSION" != "5.2" ]]; then curl -s http://getcomposer.org/installer | php; else echo 'PHP 5.2 Skipping curl -s http://getcomposer.org/installer | php';fi
-  - if [[ "$TRAVIS_PHP_VERSION" != "5.2" ]]; then php composer.phar install --dev --no-interaction; else echo 'PHP 5.2 Skipping php composer.phar install --dev --no-interaction'; fi
+  - if [[ "$TRAVIS_PHP_VERSION" != "5.2" ]]; then cp .travis.composer.json composer.json; else echo 'PHP 5.2 build skips composer installation'; fi
+  - if [[ "$TRAVIS_PHP_VERSION" != "5.2" ]]; then curl -s http://getcomposer.org/installer | php; fi
+  - if [[ "$TRAVIS_PHP_VERSION" != "5.2" ]]; then php composer.phar install --dev --no-interaction; fi
 
 script:
   - mkdir -p build/logs
-  - if [[ "$TRAVIS_PHP_VERSION" != "5.2" ]]; then php vendor/bin/phpunit -c phpunit.xml; else phpunit; fi
+  - phpunit
 
 after_script:
-  - if [[ "$TRAVIS_PHP_VERSION" != "5.2" ]]; then php vendor/bin/coveralls -v; else echo 'PHP 5.2 Skipping php vendor/bin/coveralls -v'; fi
+  - if [[ "$TRAVIS_PHP_VERSION" != "5.2" ]]; then php vendor/bin/coveralls -v; else echo 'PHP 5.2 build skips php-coveralls'; fi
