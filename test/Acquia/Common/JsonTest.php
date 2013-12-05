@@ -1,6 +1,6 @@
 <?php
 
-class Acquia_Test_Common_Json extends PHPUnit_Framework_TestCase
+class Acquia_Test_Common_JsonTest extends PHPUnit_Framework_TestCase
 {
     protected function getTestJson() {
         return '{"foo":{"bar":"bar foo","Food":{"bar":"X","Fool":{"Foolery":{"ID":"LAMA","SortOf":"LAMA","Foot":"Lorem Aliquam Morbi Aenean","Aenean":"LAMA","Aliquam":"ABC 1234:5678","Foodie":{"para":"Lorem ipsum dolor sit amet, consectetur adipiscing elit.","FoosBall":["ABC","123"]},"Footsie":"quisquam"}}}}}';
@@ -33,7 +33,6 @@ class Acquia_Test_Common_Json extends PHPUnit_Framework_TestCase
             )
         );
     }
-
 
     public function testJsonEncode()
     {
