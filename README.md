@@ -28,3 +28,5 @@ there are a few changes which need to be made to the object-oriented notation.
    extending these classes need to override the factory method to inject
    their own class name.
 
+1. TODO: Add a 5.2 compatible equivalent to ```json_encode```
+
