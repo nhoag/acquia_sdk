@@ -6,5 +6,15 @@ php:
   - "5.3"
   - "5.2"
 
+before_script:
+  - echo "TRAVIS_PHP_VERSION: $TRAVIS_PHP_VERSION"
+  - if [[ "$TRAVIS_PHP_VERSION" != "5.2" ]]; then cp composer.json.dist composer.json; fi
+  - if [[ "$TRAVIS_PHP_VERSION" != "5.2" ]]; then curl -s http://getcomposer.org/installer | php; fi
+  - if [[ "$TRAVIS_PHP_VERSION" != "5.2" ]]; then php composer.phar install --dev --no-interaction; fi
+
+script:
+  - mkdir -p build/logs
+  - if [[ "$TRAVIS_PHP_VERSION" != "5.2" ]]; then php vendor/bin/phpunit -c phpunit.xml; else phpunit; fi
+
 after_script:
-  - bin/atoum --test-all
+  - if [[ "$TRAVIS_PHP_VERSION" != "5.2" ]]; then php vendor/bin/coveralls -v; fi
