@@ -1,8 +1,8 @@
 <?php
 
-class Acquia_Test_Cloud_Api_Response_DatabaseTest extends PHPUnit_Framework_TestCase {
+class Acquia_Test_Cloud_Api_Response_ServerTest extends PHPUnit_Framework_TestCase {
 
-    private $class_name = 'Acquia_Cloud_Api_Response_Database';
+    private $class_name = 'Acquia_Cloud_Api_Response_Server';
     private $data_value = 'data_value';
 
     public function testResponseConstructorWithArray()
