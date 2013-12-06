@@ -64,7 +64,7 @@ class Acquia_Common_Json
         $result = '';
         $pos = 0;
         $string_length = strlen($json);
-        $indentation = '  ';
+        $indentation = '    ';
         $newline = "\n";
         $previous_char = '';
         $out_of_quotes = true;
@@ -78,6 +78,10 @@ class Acquia_Common_Json
 
             // Grab the next character in the string.
             $char = substr($json, $i, 1);
+
+            if ($previous_char == ':' && $out_of_quotes) {
+                $result .= ' ';
+            }
 
             // Are we inside a quoted string?
             if ($char == '"' && $previous_char != '\\') {
