@@ -71,7 +71,7 @@ class Acquia_Common_Json
 
         // If there are already newlines, assume formatted
         if (strpos($json, $newline)) {
-            return;
+            return $json;
         }
 
         for ($i=0; $i<=$string_length; $i++) {
