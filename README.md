@@ -4,7 +4,7 @@ Acquia SDK module
 [![Build Status](https://travis-ci.org/webbj74/acquia_sdk.png?branch=7.x-1.x)](https://travis-ci.org/webbj74/acquia_sdk) [![Coverage Status](https://coveralls.io/repos/webbj74/acquia_sdk/badge.png?branch=7.x-1.x)](https://coveralls.io/r/webbj74/acquia_sdk?branch=7.x-1.x)
 
 This is an in-development Drupal module based on
-[Acqia PHP SDK](https://github.com/cpliakas/acquia-sdk-php) and adapted
+[Acquia PHP SDK](https://github.com/cpliakas/acquia-sdk-php) and adapted
 for use with PHP 5.2 for compatibility with older systems. As of Dec 2013
 the focus of this module is on providing Drupal with an interface to
 [Acquia's Cloud API service](http://cloudapi.acquia.com).
