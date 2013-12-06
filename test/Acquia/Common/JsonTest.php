@@ -3,7 +3,7 @@
 class Acquia_Test_Common_JsonTest extends PHPUnit_Framework_TestCase
 {
     protected function getTestJson() {
-        return '{"foo":{"bar":"bar foo","Food":{"bar":"X","Fool":{"Foolery":{"ID":"LAMA","SortOf":"LAMA","Foot":"Lorem Aliquam Morbi Aenean","Aenean":"LAMA","Aliquam":"ABC 1234:5678","Foodie":{"para":"Lorem ipsum dolor sit amet, consectetur adipiscing elit.","FoosBall":["ABC","123"]},"Footsie":"quisquam"}}}}}';
+        return '{"foo":{"bar":"bar foo","Food":{"bar":"X","Fool":{"Foolery":{"ID":"LAMA","SortOf":"LAMA","Foot":"Lorem Aliquam Morbi Aenean","Aenean":"LAMA","Aliquam":"ABC 1234:5678","Foodie":{"para":"Lorem ipsum dolor sit amet, consectetur adipiscing elit.","FoosBall":["ABC","123"]},"Footsie":"quisquam"}}}},"test":["\u003Cfoo\u003E","\u0027bar\u0027","\u0022baz\u0022","\u0026blong\u0026","\u00e9"]}';
     }
 
     protected function getTestArray() {
@@ -30,7 +30,8 @@ class Acquia_Test_Common_JsonTest extends PHPUnit_Framework_TestCase
                         )
                     )
                 )
-            )
+            ),
+            'test' => array('<foo>',"'bar'",'"baz"','&blong&', "\xc3\xa9")
         );
     }
 
