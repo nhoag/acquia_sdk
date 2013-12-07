@@ -28,5 +28,11 @@ there are a few changes which need to be made to the object-oriented notation.
    extending these classes need to override the factory method to inject
    their own class name.
 
-1. TODO: Add a 5.2 compatible equivalent to ```json_encode```
+1. Adapted Json class to handle ```json_encode`` properly with PHP 5.2
+
+   PHP 5.2 version does not take an "options" parameter, so wrote a method
+   to perform the encoding options requested in the
+   [Acquia PHP SDK](https://github.com/cpliakas/acquia-sdk-php) version of
+   the class.
+
 
