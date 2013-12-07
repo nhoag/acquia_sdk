@@ -37,7 +37,6 @@ class Acquia_Common_Json
             // post process
         }
 
-        print_r("\n\nJSON:\n{$json}\n:NOSJ\n\n");
         $json = self::pretty_print($json);
 
         return $json;
@@ -71,9 +70,13 @@ class Acquia_Common_Json
         $previous_char = '';
         $out_of_quotes = true;
 
+        print_r("\n\nJSON A:\n{$json}\n:NOSJ\n\n");
+
         if (!defined('JSON_UNESCAPED_SLASHES') && strpos($json, '/')) {
             $json = preg_replace('#\134{1}/#', '/', $json);
         }
+
+        print_r("\n\nJSON B:\n{$json}\n:NOSJ\n\n");
 
         // Fix for lack of JSON_HEX_TAG in PHP 5.2
         if (!defined('JSON_HEX_TAG') && strpos($json, '<') || strpos($json, '>')) {
@@ -81,15 +84,21 @@ class Acquia_Common_Json
             $json = preg_replace('#>#', '\u003E', $json);
         }
 
+        print_r("\n\nJSON C:\n{$json}\n:NOSJ\n\n");
+
         // Fix for lack of JSON_HEX_AMP in PHP 5.2
         if (!defined('JSON_HEX_AMP') && strpos($json, '&')) {
             $json = preg_replace('#&#', '\u0026', $json);
         }
 
+        print_r("\n\nJSON D:\n{$json}\n:NOSJ\n\n");
+
         // Fix for lack of JSON_HEX_APOS in PHP 5.2
         if (!defined('JSON_HEX_APOS') && strpos($json, "'")) {
             $json = preg_replace("#'#", '\u0027', $json);
         }
+
+        print_r("\n\nJSON E:\n{$json}\n:NOSJ\n\n");
 
         // If there are already newlines, assume formatted
         if (!strpos($json, $newline)) {
@@ -136,6 +145,7 @@ class Acquia_Common_Json
                 $previous_char = $char;
             }
             $json = $result;
+            print_r("\n\nJSON F:\n{$json}\n:NOSJ\n\n");
 
         }
 
@@ -143,6 +153,7 @@ class Acquia_Common_Json
         if (!defined('JSON_HEX_QUOT') && strpos($json, '\\"')) {
             $json = preg_replace('#\134{1}"#', '\u0022', $json);
         }
+        print_r("\n\nJSON G:\n{$json}\n:NOSJ\n\n");
 
         return $json;
     }
