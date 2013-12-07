@@ -73,6 +73,15 @@ class Acquia_Common_Json
             $json = preg_replace('#\134{1}/#', '/', $json);
         }
 
+        if (!defined('JSON_HEX_TAG') && strpos($json, '<') || strpos($json, '>')) {
+            $json = preg_replace('#<#', '\u003C', $json);
+            $json = preg_replace('#<#', '\u003E', $json);
+        }
+
+        if (!defined('JSON_HEX_AMP') && strpos($json, '&') || strpos($json, '>')) {
+            $json = preg_replace('#&#', '\u0026', $json);
+        }
+
         // If there are already newlines, assume formatted
         if (strpos($json, $newline)) {
             return $json;
