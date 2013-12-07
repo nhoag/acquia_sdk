@@ -14,11 +14,11 @@ class Acquia_Test_Common_JsonTest extends PHPUnit_Framework_TestCase
 
     public function testJsonEncode()
     {
-       $this->assertEquals(Acquia_Common_Json::encode($this->getTestArray()),$this->getTestJson());
+       $this->assertEquals($this->getTestJson(), Acquia_Common_Json::encode($this->getTestArray()));
     }
 
     public function testJsonDecode()
     {
-        $this->assertEquals(Acquia_Common_Json::decode($this->getTestJson()),$this->getTestArray());
+        $this->assertEquals($this->getTestArray(), Acquia_Common_Json::decode($this->getTestJson()));
     }
 }
