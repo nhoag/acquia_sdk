@@ -69,6 +69,10 @@ class Acquia_Common_Json
         $previous_char = '';
         $out_of_quotes = true;
 
+        if (!defined('JSON_UNESCAPED_SLASHES') && strpos($json, '/')) {
+            $json = preg_replace('#\134{1}/#', '/', $json);
+        }
+
         // If there are already newlines, assume formatted
         if (strpos($json, $newline)) {
             return $json;

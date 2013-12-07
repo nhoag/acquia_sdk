@@ -39,6 +39,7 @@ class Acquia_Test_Common_JsonTest extends PHPUnit_Framework_TestCase
                 '&blong&',
                 "\xc3\xa9",
                 '/path/to/api.json',
+                '/another\/path\\//to/api.json',
                 '\Acquia\Common\Json',
             )
         );
