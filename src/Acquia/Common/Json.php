@@ -34,12 +34,10 @@ class Acquia_Common_Json
         }
         else {
             $json = json_encode($data);
-            // post process
+            $json = self::encode_unsupported($json);
         }
 
-        $json = self::pretty_print($json);
-
-        return $json;
+        return self::pretty_print($json);
     }
 
     /**
@@ -51,6 +49,7 @@ class Acquia_Common_Json
     {
         return json_decode($json, true);
     }
+
 
     /**
      * Indents a flat JSON string to make it more human-readable.
@@ -64,7 +63,6 @@ class Acquia_Common_Json
 
         $result = '';
         $pos = 0;
-        $string_length = 0;
         $indentation = '    ';
         $newline = "\n";
         $previous_char = '';
@@ -72,27 +70,6 @@ class Acquia_Common_Json
 
         if (!defined('JSON_UNESCAPED_SLASHES') && strpos($json, '/')) {
             $json = preg_replace('#\134{1}/#', '/', $json);
-        }
-
-        // Fix for lack of JSON_HEX_TAG in PHP 5.2
-        if (!defined('JSON_HEX_TAG') && strpos($json, '<') || strpos($json, '>')) {
-            $json = preg_replace('#<#', '\u003C', $json);
-            $json = preg_replace('#>#', '\u003E', $json);
-        }
-
-        // Fix for lack of JSON_HEX_AMP in PHP 5.2
-        if (!defined('JSON_HEX_AMP') && strpos($json, '&')) {
-            $json = preg_replace('#&#', '\u0026', $json);
-        }
-
-        // Fix for lack of JSON_HEX_APOS in PHP 5.2
-        if (!defined('JSON_HEX_APOS') && strpos($json, "'")) {
-            $json = preg_replace("#'#", '\u0027', $json);
-        }
-
-        // Fix for lack of JSON_HEX_QUOT in PHP 5.2
-        if (!defined('JSON_HEX_QUOT') && strpos($json, '\\"')) {
-            $json = preg_replace('#\134{1}"#', '\u0022', $json);
         }
 
         // If there are already newlines, assume formatted
@@ -145,6 +122,48 @@ class Acquia_Common_Json
         }
 
         return $result;
+    }
+
+    /**
+     * Handle encoding not supported in older PHP version
+     */
+    private static function encode_unsupported($json) {
+
+        $match = array();
+        $replace = array();
+
+        // Fix for lack of JSON_HEX_TAG in PHP 5.2
+        if (!defined('JSON_HEX_TAG') && strpos($json, '<') || strpos($json, '>')) {
+            $match[] = '#<#';
+            $match[] = '#>#';
+            $replace[] = '\u003C';
+            $replace[] = '\u003E';
+        }
+
+        // Fix for lack of JSON_HEX_AMP in PHP 5.2
+        if (!defined('JSON_HEX_AMP') && strpos($json, '&')) {
+            $match[] = '#&#';
+            $replace[] = '\u0026';
+        }
+
+        // Fix for lack of JSON_HEX_APOS in PHP 5.2
+        if (!defined('JSON_HEX_APOS') && strpos($json, "'")) {
+            $match[] = "#'#";
+            $replace[] = '\u0027';
+        }
+
+        // Fix for lack of JSON_HEX_QUOT in PHP 5.2
+        if (!defined('JSON_HEX_QUOT') && strpos($json, '\\"')) {
+            $match[] = '#\134{1}"#';
+            $replace[] = '\u0022';
+        }
+
+        // Process replacements, if any
+        if(count($match)) {
+            $json = preg_replace($match, $replace, $json);
+        }
+
+        return $json;
     }
 
 }
