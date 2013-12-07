@@ -85,13 +85,13 @@ class Acquia_Common_Json
         }
 
         // Fix for lack of JSON_HEX_APOS in PHP 5.2
-        if (!defined('JSON_HEX_APOS') && strpos($json, "\134'")) {
-            $json = preg_replace("#\134{1}'#", '\u0027', $json);
+        if (!defined('JSON_HEX_APOS') && strpos($json, '\134\047')) {
+            $json = preg_replace('#\134{1}\047#', '\u0027', $json);
         }
 
         // Fix for lack of JSON_HEX_QUOT in PHP 5.2
-        if (!defined('JSON_HEX_QUOT') && strpos($json, '\134"')) {
-            $json = preg_replace('#\134{1}"#', '\u0022', $json);
+        if (!defined('JSON_HEX_QUOT') && strpos($json, '\134\042')) {
+            $json = preg_replace('#\134{1}\042#', '\u0022', $json);
         }
 
         // If there are already newlines, assume formatted
