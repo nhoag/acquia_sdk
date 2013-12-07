@@ -36,6 +36,8 @@ class Acquia_Common_Json
             $json = json_encode($data);
             // post process
         }
+
+        print_r("\n\nJSON:\n{$json}\n:NOSJ\n\n")
         $json = self::pretty_print($json);
 
         return $json;
