@@ -64,19 +64,15 @@ class Acquia_Common_Json
 
         $result = '';
         $pos = 0;
-        $string_length = strlen($json);
+        $string_length = 0;
         $indentation = '    ';
         $newline = "\n";
         $previous_char = '';
         $out_of_quotes = true;
 
-        print_r("\n\nJSON A:\n{$json}\n:NOSJ\n\n");
-
         if (!defined('JSON_UNESCAPED_SLASHES') && strpos($json, '/')) {
             $json = preg_replace('#\134{1}/#', '/', $json);
         }
-
-        print_r("\n\nJSON B:\n{$json}\n:NOSJ\n\n");
 
         // Fix for lack of JSON_HEX_TAG in PHP 5.2
         if (!defined('JSON_HEX_TAG') && strpos($json, '<') || strpos($json, '>')) {
@@ -84,78 +80,71 @@ class Acquia_Common_Json
             $json = preg_replace('#>#', '\u003E', $json);
         }
 
-        print_r("\n\nJSON C:\n{$json}\n:NOSJ\n\n");
-
         // Fix for lack of JSON_HEX_AMP in PHP 5.2
         if (!defined('JSON_HEX_AMP') && strpos($json, '&')) {
             $json = preg_replace('#&#', '\u0026', $json);
         }
-
-        print_r("\n\nJSON D:\n{$json}\n:NOSJ\n\n");
 
         // Fix for lack of JSON_HEX_APOS in PHP 5.2
         if (!defined('JSON_HEX_APOS') && strpos($json, "'")) {
             $json = preg_replace("#'#", '\u0027', $json);
         }
 
-        print_r("\n\nJSON E:\n{$json}\n:NOSJ\n\n");
-
-        // If there are already newlines, assume formatted
-        if (!strpos($json, $newline)) {
-
-            for ($i=0; $i<=$string_length; $i++) {
-
-                // Grab the next character in the string.
-                $char = substr($json, $i, 1);
-
-                if ($previous_char == ':' && $out_of_quotes) {
-                    $result .= ' ';
-                }
-
-                // Are we inside a quoted string?
-                if ($char == '"' && $previous_char != '\\') {
-                    $out_of_quotes = !$out_of_quotes;
-
-                    // If this character is the end of an element,
-                    // output a new line and indent the next line.
-                } else if(($char == '}' || $char == ']') && $out_of_quotes) {
-                    $result .= $newline;
-                    $pos --;
-                    for ($j=0; $j<$pos; $j++) {
-                        $result .= $indentation;
-                    }
-                }
-
-                // Add the character to the result string.
-                $result .= $char;
-
-                // If the last character was the beginning of an element,
-                // output a new line and indent the next line.
-                if (($char == ',' || $char == '{' || $char == '[') && $out_of_quotes) {
-                    $result .= $newline;
-                    if ($char == '{' || $char == '[') {
-                        $pos ++;
-                    }
-
-                    for ($j = 0; $j < $pos; $j++) {
-                        $result .= $indentation;
-                    }
-                }
-
-                $previous_char = $char;
-            }
-            $json = $result;
-            print_r("\n\nJSON F:\n{$json}\n:NOSJ\n\n");
-
-        }
-
         // Fix for lack of JSON_HEX_QUOT in PHP 5.2
         if (!defined('JSON_HEX_QUOT') && strpos($json, '\\"')) {
             $json = preg_replace('#\134{1}"#', '\u0022', $json);
         }
-        print_r("\n\nJSON G:\n{$json}\n:NOSJ\n\n");
 
-        return $json;
+        // If there are already newlines, assume formatted
+        if (strpos($json, $newline)) {
+            return $json;
+        }
+
+        $string_length = strlen($json);
+
+        for ($i=0; $i<=$string_length; $i++) {
+
+            // Grab the next character in the string.
+            $char = substr($json, $i, 1);
+
+            if ($previous_char == ':' && $out_of_quotes) {
+                $result .= ' ';
+            }
+
+            // Are we inside a quoted string?
+            if ($char == '"' && $previous_char != '\\') {
+                $out_of_quotes = !$out_of_quotes;
+
+                // If this character is the end of an element,
+                // output a new line and indent the next line.
+            } else if(($char == '}' || $char == ']') && $out_of_quotes) {
+                $result .= $newline;
+                $pos --;
+                for ($j=0; $j<$pos; $j++) {
+                    $result .= $indentation;
+                }
+            }
+
+            // Add the character to the result string.
+            $result .= $char;
+
+            // If the last character was the beginning of an element,
+            // output a new line and indent the next line.
+            if (($char == ',' || $char == '{' || $char == '[') && $out_of_quotes) {
+                $result .= $newline;
+                if ($char == '{' || $char == '[') {
+                    $pos ++;
+                }
+
+                for ($j = 0; $j < $pos; $j++) {
+                    $result .= $indentation;
+                }
+            }
+
+            $previous_char = $char;
+        }
+
+        return $result;
     }
 
 }

@@ -14,17 +14,6 @@ class Acquia_Test_Common_JsonTest extends PHPUnit_Framework_TestCase
 
     public function testJsonEncode()
     {
-        $expected = $this->getTestJson();
-        echo "\n\nEXPECTED:\n";
-        print_r($expected);
-
-        $actual = Acquia_Common_Json::encode($this->getTestArray());
-        echo "\n\nACTUAL:\n";
-        print_r($actual);
-        echo "\n\n";
-
-        $this->assertEquals($expected, $actual);
-
         $this->assertEquals($this->getTestJson(), Acquia_Common_Json::encode($this->getTestArray()));
     }
 
