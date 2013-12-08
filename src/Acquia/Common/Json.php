@@ -12,6 +12,11 @@
 
 class Acquia_Common_Json
 {
+    const HEX_TAG = 1;
+    const HEX_AMP = 2;
+    const HEX_APOS = 4;
+    const HEX_QUOT = 8;
+
     /**
      * @param mixed $data
      *
@@ -33,8 +38,9 @@ class Acquia_Common_Json
             $json = json_encode($data, $options);
         }
         else {
+            $options = self::HEX_TAG | self::HEX_APOS | self::HEX_AMP | self::HEX_QUOT;
             $json = json_encode($data);
-            $json = self::encode_unsupported($json);
+            $json = self::encode_optional($json, $options);
         }
 
         return self::pretty_print($json);
@@ -49,7 +55,6 @@ class Acquia_Common_Json
     {
         return json_decode($json, true);
     }
-
 
     /**
      * Indents a flat JSON string to make it more human-readable.
@@ -127,13 +132,13 @@ class Acquia_Common_Json
     /**
      * Handle encoding not supported in older PHP version
      */
-    private static function encode_unsupported($json) {
+    public static function encode_optional($json, $options = 0) {
 
         $match = array();
         $replace = array();
 
         // Fix for lack of JSON_HEX_TAG in PHP 5.2
-        if (!defined('JSON_HEX_TAG') && strpos($json, '<') || strpos($json, '>')) {
+        if (($options & self::HEX_TAG) && (strpos($json, '<') || strpos($json, '>'))) {
             $match[] = '#<#';
             $match[] = '#>#';
             $replace[] = '\u003C';
@@ -141,19 +146,19 @@ class Acquia_Common_Json
         }
 
         // Fix for lack of JSON_HEX_AMP in PHP 5.2
-        if (!defined('JSON_HEX_AMP') && strpos($json, '&')) {
+        if (($options & self::HEX_AMP) && strpos($json, '&')) {
             $match[] = '#&#';
             $replace[] = '\u0026';
         }
 
         // Fix for lack of JSON_HEX_APOS in PHP 5.2
-        if (!defined('JSON_HEX_APOS') && strpos($json, "'")) {
+        if (($options & self::HEX_APOS) && strpos($json, "'")) {
             $match[] = "#'#";
             $replace[] = '\u0027';
         }
 
         // Fix for lack of JSON_HEX_QUOT in PHP 5.2
-        if (!defined('JSON_HEX_QUOT') && strpos($json, '\\"')) {
+        if (($options & self::HEX_QUOT) && strpos($json, '\\"')) {
             $match[] = '#\134{1}"#';
             $replace[] = '\u0022';
         }
