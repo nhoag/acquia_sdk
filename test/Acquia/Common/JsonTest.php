@@ -45,25 +45,37 @@ class Acquia_Test_Common_JsonTest extends PHPUnit_Framework_TestCase
 
         $flag_list = array_keys($test_pattern);
         $flag_count = count($flag_list);
+
+        // Find max number of possible flag combinations
         $combinations = pow(2, $flag_count);
+
+        // Iterate through each flag combination
         for ($i = 0; $i < $combinations; $i++) {
-            $flag = 0;
+            $test_flags = 0;
             $test_strings = array();
             $expected_strings = array();
-            for ($j = 0; $j < $flag_count; $j++) {
-                $test_strings[] = $test_pattern[$flag_list[$j]]['test'];
-                if (($i & pow(2,$j)) > 0) {
-                    $flag |= $flag_list[$j];
-                    $expected_strings[] = $test_pattern[$flag_list[$j]]['expected'];
+
+            // for each flag combination test if the flag key is set or not
+            for ($flag_key = 0; $flag_key < $flag_count; $flag_key++) {
+                $test_strings[] = $test_pattern[$flag_list[$flag_key]]['test'];
+
+                // if the flag_key is set
+                //     store its flag value and store its expected transformation
+                // else store its the untransformed test pattern
+                if (($i & pow(2,$flag_key)) > 0) {
+                    $test_flags |= $flag_list[$flag_key];
+                    $expected_strings[] = $test_pattern[$flag_list[$flag_key]]['expected'];
                 }
                 else {
-                    $expected_strings[] = $test_pattern[$flag_list[$j]]['test'];
+                    $expected_strings[] = $test_pattern[$flag_list[$flag_key]]['test'];
                 }
 
             }
+
+            // We don't need proper JSON for testing, so just send ':' delimited strings
             $test_string = implode(':', $test_strings);
             $expected_string = implode(':', $expected_strings);
-            $this->assertEquals($expected_string, Acquia_Common_Json::encode_optional($test_string, $flag));
+            $this->assertEquals($expected_string, Acquia_Common_Json::encode_optional($test_string, $test_flags));
         }
     }
 
