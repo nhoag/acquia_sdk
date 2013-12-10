@@ -92,4 +92,23 @@ class Acquia_Test_Cloud_Api_CloudApiClientTest extends PHPUnit_Framework_TestCas
         $this->assertTrue($sites[$siteName] instanceof Acquia_Cloud_Api_Response_Site);
     }
 
+    public function testMockSiteCall()
+    {
+        $siteName = 'myhostingstage:mysitegroup';
+        $responseData = array (
+            'production_mode' => '1',
+            'title' => 'My Site',
+            'vcs_type' => 'git',
+            'vcs_url' => 'mysitegroup@git.example.com:mysitegroup.git',
+            'unix_username' => 'mysitegroup',
+            'name' => $siteName,
+        );
+
+        $cloudapi = $this->getMockCloudApiClient(array('get'));
+        $this->addMockResponse($cloudapi, $responseData);
+
+        $site = $cloudapi->site($siteName);
+        $this->assertEquals($site['hosting_stage'], 'myhostingstage');
+        $this->assertEquals($site['site_group'], 'mysitegroup');
+    }
 }
