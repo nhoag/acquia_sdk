@@ -7,9 +7,9 @@ class Acquia_Test_Cloud_Api_CloudApiClientTest extends PHPUnit_Framework_TestCas
      * @param $methods array Methods to mock
      * @return Acquia_Cloud_Api_CloudApiClient
      */
-    public function getCloudApiClient($methods = array('get', 'post'))
+    public function getCloudApiClient($methods = array('make_request'))
     {
-        return $this->getMock('Acquia_Cloud_Api_CloudApiClient', $methods, array(
+        $cloudapi = $this->getMock('Acquia_Cloud_Api_CloudApiClient', $methods, array(
                 'https://cloudapi.example.com',
                 array(
                     'base_url' => 'https://cloudapi.example.com',
@@ -17,6 +17,14 @@ class Acquia_Test_Cloud_Api_CloudApiClientTest extends PHPUnit_Framework_TestCas
                     'username' => 'test-username',
                     'password' => 'test-password',
                 )));
+
+        $cloudapi->setDefaultHeaders(array(
+                'Content-Type' => 'application/json; charset=utf-8',
+                'User-Agent' => 'acquia_sdk/7.1.0 (jonathan.webb@acquia.com)'
+                    . ' PHP/' . PHP_VERSION
+            ));
+
+        return $cloudapi;
     }
 
     /**
@@ -28,10 +36,7 @@ class Acquia_Test_Cloud_Api_CloudApiClientTest extends PHPUnit_Framework_TestCas
         $json = Acquia_Common_Json::encode($responseData);
         $response = Acquia_Common_Json::decode($json);
         $cloudapi->expects($this->any())
-            ->method('get')
-            ->will($this->returnValue($response));
-        $cloudapi->expects($this->any())
-            ->method('post')
+            ->method('make_request')
             ->will($this->returnValue($response));
     }
 

@@ -27,6 +27,14 @@ class Acquia_Portable_Client {
         $this->headers = $default_headers;
     }
 
+    protected function make_request($ch, $watchdog = '')
+    {
+        if (!$server_output = curl_exec($ch)) {
+            throw new RuntimeException(curl_error($ch) . $watchdog);
+        }
+        return Acquia_Common_Json::decode($server_output);
+    }
+
     /**
      * Helper function that makes the curl calls (GET).
      * @throws RuntimeException
@@ -64,12 +72,8 @@ class Acquia_Portable_Client {
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 
-            if (!$server_output = curl_exec($ch)) {
-                throw new RuntimeException(curl_error($ch) . " [Requesting the URL '{$url}' with user '{$username}'']");
-            }
+            $return_value = $this->make_request($ch, " [Requesting the URL '{$url}' with user '{$username}'']");
             curl_close($ch);
-
-            $return_value = drupal_json_decode($server_output);
         }
         else {
             throw new RuntimeException("Curl init failed in API 'get' request.");
@@ -117,12 +121,8 @@ class Acquia_Portable_Client {
             curl_setopt($ch, CURLOPT_POST, 0);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
 
-            if (!$server_output = curl_exec($ch)) {
-                throw new RuntimeException(curl_error($ch) . " [Posting to the URL '{$url}' with user '{$username}'']");
-            }
+            $return_value = $this->make_request($ch, "  [Posting to the URL '{$url}' with user '{$username}'']");
             curl_close($ch);
-
-            $return_value = drupal_json_decode($server_output);
         }
         else {
             throw new RuntimeException("Curl init failed in API 'post' request.");
