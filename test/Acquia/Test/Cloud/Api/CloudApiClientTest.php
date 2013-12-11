@@ -4,15 +4,19 @@
 class Acquia_Test_Cloud_Api_CloudApiClientTest extends PHPUnit_Framework_TestCase
 {
     /**
+     * @param $methods array Methods to mock
      * @return Acquia_Cloud_Api_CloudApiClient
      */
-    public function getCloudApiClient()
+    public function getCloudApiClient($methods = array('get', 'post'))
     {
-        return Acquia_Cloud_Api_CloudApiClient::factory(array(
-                'base_url' => 'https://cloudapi.example.com',
-                'username' => 'test-username',
-                'password' => 'test-password',
-            ));
+        return $this->getMock('Acquia_Cloud_Api_CloudApiClient', $methods, array(
+                'https://cloudapi.example.com',
+                array(
+                    'base_url' => 'https://cloudapi.example.com',
+                    'base_path' => Acquia_Cloud_Api_CloudApiClient::BASE_PATH,
+                    'username' => 'test-username',
+                    'password' => 'test-password',
+                )));
     }
 
     /**
@@ -26,33 +30,9 @@ class Acquia_Test_Cloud_Api_CloudApiClientTest extends PHPUnit_Framework_TestCas
         $cloudapi->expects($this->any())
             ->method('get')
             ->will($this->returnValue($response));
-    }
-
-    /**
-     * @param Acquia_Cloud_Api_CloudApiClient $cloudapi
-     * @param array $responseData
-     */
-    public function addMockPostResponse(Acquia_Cloud_Api_CloudApiClient $cloudapi, array $responseData)
-    {
-        $json = Acquia_Common_Json::encode($responseData);
-        $response = Acquia_Common_Json::decode($json);
         $cloudapi->expects($this->any())
             ->method('post')
             ->will($this->returnValue($response));
-    }
-
-    /**
-     * @return Acquia_Cloud_Api_CloudApiClient
-     */
-    public function getMockCloudApiClient($methods = null)
-    {
-        return $this->getMock('Acquia_Cloud_Api_CloudApiClient', $methods, array(
-                'https://cloudapi.example.com',
-                array(
-                    'base_url' => 'https://cloudapi.example.com',
-                    'username' => 'test-username',
-                    'password' => 'test-password',
-                )));
     }
 
     public function getEnvironmentData($stage = 'dev')
@@ -109,7 +89,8 @@ class Acquia_Test_Cloud_Api_CloudApiClientTest extends PHPUnit_Framework_TestCas
     {
         $siteName = 'myhostingstage:mysitegroup';
         $responseData = array($siteName);
-        $cloudapi = $this->getMockCloudApiClient(array('get'));
+
+        $cloudapi = $this->getCloudApiClient();
         $this->addMockResponse($cloudapi, $responseData);
 
         $sites = $cloudapi->sites();
@@ -129,7 +110,7 @@ class Acquia_Test_Cloud_Api_CloudApiClientTest extends PHPUnit_Framework_TestCas
             'name' => $siteName,
         );
 
-        $cloudapi = $this->getMockCloudApiClient(array('get'));
+        $cloudapi = $this->getCloudApiClient();
         $this->addMockResponse($cloudapi, $responseData);
 
         $site = $cloudapi->site($siteName);
@@ -145,7 +126,7 @@ class Acquia_Test_Cloud_Api_CloudApiClientTest extends PHPUnit_Framework_TestCas
             $this->getEnvironmentData('test'),
         );
 
-        $cloudapi = $this->getMockCloudApiClient(array('get'));
+        $cloudapi = $this->getCloudApiClient();
         $this->addMockResponse($cloudapi, $responseData);
 
         $environments = $cloudapi->environments($siteName);
@@ -159,7 +140,7 @@ class Acquia_Test_Cloud_Api_CloudApiClientTest extends PHPUnit_Framework_TestCas
         $siteName = 'myhostingstage:mysitegroup';
         $responseData = $this->getEnvironmentData('dev');
 
-        $cloudapi = $this->getMockCloudApiClient(array('get'));
+        $cloudapi = $this->getCloudApiClient();
         $this->addMockResponse($cloudapi, $responseData);
 
         $env = $cloudapi->environment($siteName, 'dev');
@@ -194,8 +175,8 @@ class Acquia_Test_Cloud_Api_CloudApiClientTest extends PHPUnit_Framework_TestCas
             'completed' => '',
         );
 
-        $cloudapi = $this->getMockCloudApiClient(array('post'));
-        $this->addMockPostResponse($cloudapi, $responseData);
+        $cloudapi = $this->getCloudApiClient();
+        $this->addMockResponse($cloudapi, $responseData);
         $task = $cloudapi->installDistro($siteName, $environment, $type, $source);
         foreach($responseData as $key => $value) {
             $this->assertEquals($value, $task[$key]);
