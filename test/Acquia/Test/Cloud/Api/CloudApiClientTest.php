@@ -65,6 +65,20 @@ class Acquia_Test_Cloud_Api_CloudApiClientTest extends PHPUnit_Framework_TestCas
         );
     }
 
+    public function getBackupData($date = '1978-11-29') {
+        return array(
+            'link' => "http://mysitedev.myhostingstage.hosting.example.com/AH_DOWNLOAD?dev=123456789deadbeef&d=/mnt/files/dbname.dev/backups/dev-mysite-dbname-{$date}.sql.gz&t=1386777107",
+            'deleted' => 0,
+            'completed' => 1386657182,
+            'path' => "backups/dev-mysite-dbname-{$date}.sql.gz&t=1386777107",
+            'type' => 'daily',
+            'checksum' => '123456789deadbeef',
+            'name' => 'dbname',
+            'id' => rand(10000,99999),
+            'started' => 1386657182
+        );
+    }
+
     public function getServerData($type = 'web')
     {
         $number = rand(1000,9999);
@@ -315,6 +329,38 @@ class Acquia_Test_Cloud_Api_CloudApiClientTest extends PHPUnit_Framework_TestCas
 
         $database = $cloudapi->environmentDatabase($siteName, 'dev', 'one');
         $this->assertTrue($database instanceof Acquia_Cloud_Api_Response_Database);
+        foreach($responseData as $key => $value) {
+            $this->assertEquals($value, $database[$key]);
+        }
+    }
+
+    public function testMockDatabaseBackupsCall()
+    {
+        $siteName = 'myhostingstage:mysitegroup';
+        $responseData = array(
+            $this->getBackupData('2013-12-11'),
+            $this->getBackupData('2013-12-10'),
+            $this->getBackupData('2013-12-09')
+        );
+
+        $cloudapi = $this->getCloudApiClient();
+        $this->addMockResponse($cloudapi, $responseData);
+
+        $database = $cloudapi->databaseBackups($siteName, 'dev', 'one');
+        foreach($responseData as $key => $value) {
+            $this->assertEquals($value, $database[$key]);
+        }
+    }
+
+    public function testMockDatabaseBackupCall()
+    {
+        $siteName = 'myhostingstage:mysitegroup';
+        $responseData = $this->getBackupData('2013-12-11');
+
+        $cloudapi = $this->getCloudApiClient();
+        $this->addMockResponse($cloudapi, $responseData);
+
+        $database = $cloudapi->databaseBackups($siteName, 'dev', 'one');
         foreach($responseData as $key => $value) {
             $this->assertEquals($value, $database[$key]);
         }
