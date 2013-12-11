@@ -458,7 +458,9 @@ class Acquia_Cloud_Api_CloudApiClient extends Acquia_Portable_Client implements 
             'site' => $site,
             'env' => $env,
         );
-        return $this->sendGet('{+base_path}/sites/{site}/envs/{env}/dbs.json', $variables);
+        $data = $this->sendGet('{+base_path}/sites/{site}/envs/{env}/dbs.json', $variables);
+        return new Acquia_Cloud_Api_Response_Databases($data);
+
     }
 
     /**
@@ -477,7 +479,8 @@ class Acquia_Cloud_Api_CloudApiClient extends Acquia_Portable_Client implements 
             'env' => $env,
             'db' => $db,
         );
-        return $this->sendGet('{+base_path}/sites/{site}/envs/{env}/dbs/{db}.json', $variables);
+        $data = $this->sendGet('{+base_path}/sites/{site}/envs/{env}/dbs/{db}.json', $variables);
+        return new Acquia_Cloud_Api_Response_Database($data);
     }
 
     /**
