@@ -93,7 +93,7 @@ class Acquia_Test_Cloud_Api_CloudApiClientTest extends PHPUnit_Framework_TestCas
             'password' => 'test-password',
         );
 
-        $cloudapi = $this->getCloudApiClient();
+        $cloudapi = Acquia_Cloud_Api_CloudApiClient::factory($expected);
         $this->assertEquals($expected, $cloudapi->getBuilderParams());
     }
 
