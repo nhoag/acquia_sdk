@@ -167,6 +167,38 @@ class Acquia_Test_Cloud_Api_CloudApiClientTest extends PHPUnit_Framework_TestCas
         }
     }
 
+    public function testMockSiteDatabasesCall()
+    {
+        $siteName = 'myhostingstage:mysitegroup';
+        $responseData = array (
+            array('name' => 'one'),
+            array('name' => 'two'),
+        );
+
+        $cloudapi = $this->getCloudApiClient();
+        $this->addMockResponse($cloudapi, $responseData);
+
+        $databases = $cloudapi->siteDatabases($siteName);
+        $this->assertTrue($databases instanceof Acquia_Cloud_Api_Response_Databases);
+        $this->assertTrue($databases['one'] instanceof Acquia_Cloud_Api_Response_Database);
+        $this->assertTrue($databases['two'] instanceof Acquia_Cloud_Api_Response_Database);
+    }
+
+    public function testMockSiteDatabaseCall()
+    {
+        $siteName = 'myhostingstage:mysitegroup';
+        $responseData = $this->getDatabaseData('one');
+
+        $cloudapi = $this->getCloudApiClient();
+        $this->addMockResponse($cloudapi, $responseData);
+
+        $database = $cloudapi->siteDatabase($siteName, 'one');
+        $this->assertTrue($database instanceof Acquia_Cloud_Api_Response_Database);
+        foreach($responseData as $key => $value) {
+            $this->assertEquals($value, $database[$key]);
+        }
+    }
+
     public function testMockEnvironmentDatabasesCall()
     {
         $siteName = 'myhostingstage:mysitegroup';
