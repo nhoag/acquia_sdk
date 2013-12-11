@@ -400,6 +400,42 @@ class Acquia_Test_Cloud_Api_CloudApiClientTest extends PHPUnit_Framework_TestCas
         }
     }
 
+    public function testMockCreateDatabaseBackupCall()
+    {
+        $siteName = 'myhostingstage:mysitegroup';
+        $environment = 'dev';
+        $type = 'distro_name';
+        $source = 'acquia-drupal-7';
+        $taskId = 12345;
+
+        // Response is an Acquia Cloud Task
+        $responseData = array(
+            'recipient' => '',
+            'created' => time(),
+            // The values encoded in the body can come back in any order
+            'body' => sprintf('["%s","%s","%s"]', $siteName, $environment, $siteName),
+            'id' => $taskId,
+            'hidden' => 0,
+            'result' => '',
+            'queue' => 'create-db-backup-ondemand',
+            'percentage' => '',
+            'state' => 'waiting',
+            'started' => '',
+            'cookie' => '',
+            'sender' => 'cloud_api',
+            'description' => "Backup database dbname in dev environment.",
+            'completed' => '',
+        );
+
+        $cloudapi = $this->getCloudApiClient();
+        $this->addMockResponse($cloudapi, $responseData);
+        $task = $cloudapi->createDatabaseBackup($siteName, 'dev', 'dbname');
+        $this->assertEquals($taskId, $task['id']);
+        foreach($responseData as $key => $value) {
+            $this->assertEquals($value, $task[$key]);
+        }
+    }
+
     public function testMockTaskInfoCall()
     {
         $siteName = 'myhostingstage:mysitegroup';
