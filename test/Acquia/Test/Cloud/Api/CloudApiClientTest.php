@@ -162,7 +162,7 @@ class Acquia_Test_Cloud_Api_CloudApiClientTest extends PHPUnit_Framework_TestCas
         }
     }
 
-    public function testMockDatabasesCall()
+    public function testMockEnvironmentDatabasesCall()
     {
         $siteName = 'myhostingstage:mysitegroup';
         $responseData = array (
@@ -174,12 +174,25 @@ class Acquia_Test_Cloud_Api_CloudApiClientTest extends PHPUnit_Framework_TestCas
         $this->addMockResponse($cloudapi, $responseData);
 
         $databases = $cloudapi->environmentDatabases($siteName, 'dev');
-        print_r($databases);
         $this->assertTrue($databases instanceof Acquia_Cloud_Api_Response_Databases);
         $this->assertTrue($databases['one'] instanceof Acquia_Cloud_Api_Response_Database);
         $this->assertTrue($databases['two'] instanceof Acquia_Cloud_Api_Response_Database);
     }
 
+    public function testMockEnvironmentDatabaseCall()
+    {
+        $siteName = 'myhostingstage:mysitegroup';
+        $responseData = $this->getDatabaseData('one');
+
+        $cloudapi = $this->getCloudApiClient();
+        $this->addMockResponse($cloudapi, $responseData);
+
+        $database = $cloudapi->environmentDatabase($siteName, 'dev', 'one');
+        $this->assertTrue($database instanceof Acquia_Cloud_Api_Response_Database);
+        foreach($responseData as $key => $value) {
+            $this->assertEquals($value, $database[$key]);
+        }
+    }
 
     public function testMockInstallDistroByNameCall()
     {
