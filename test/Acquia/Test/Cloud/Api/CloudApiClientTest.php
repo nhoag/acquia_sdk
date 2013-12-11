@@ -47,6 +47,19 @@ class Acquia_Test_Cloud_Api_CloudApiClientTest extends PHPUnit_Framework_TestCas
         );
     }
 
+    public function getDatabaseData($name = "zero")
+    {
+        $instance_name = 'db' . rand();
+        return array(
+            "username" => "test-username",
+            "password" => "test-password",
+            "instance_name" => $instance_name,
+            "name" => $name,
+            "db_cluster" => "1234",
+            "host" => 'server-1.myhostingstage.hosting.example.com'
+        );
+    }
+
     /**
      * @expectedException RuntimeException
      */
@@ -148,6 +161,25 @@ class Acquia_Test_Cloud_Api_CloudApiClientTest extends PHPUnit_Framework_TestCas
             $this->assertEquals($value, $env[$key]);
         }
     }
+
+    public function testMockDatabasesCall()
+    {
+        $siteName = 'myhostingstage:mysitegroup';
+        $responseData = array (
+            $this->getDatabaseData('one'),
+            $this->getDatabaseData('two'),
+        );
+
+        $cloudapi = $this->getCloudApiClient();
+        $this->addMockResponse($cloudapi, $responseData);
+
+        $databases = $cloudapi->environmentDatabases($siteName, 'dev');
+        print_r($databases);
+        $this->assertTrue($databases instanceof Acquia_Cloud_Api_Response_Databases);
+        $this->assertTrue($databases['one'] instanceof Acquia_Cloud_Api_Response_Database);
+        $this->assertTrue($databases['two'] instanceof Acquia_Cloud_Api_Response_Database);
+    }
+
 
     public function testMockInstallDistroByNameCall()
     {
