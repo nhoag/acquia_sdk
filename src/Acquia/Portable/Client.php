@@ -71,7 +71,7 @@ class Acquia_Portable_Client {
             curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-
+            curl_setopt($ch, CURLOPT_CAINFO, dirname(__FILE__) . "/cacert.pem");
             $return_value = $this->make_request($ch, " [Requesting the URL '{$url}' with user '{$username}'']");
             curl_close($ch);
         }
@@ -117,6 +117,7 @@ class Acquia_Portable_Client {
             curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+            curl_setopt($ch, CURLOPT_CAINFO, dirname(__FILE__) . "/cacert.pem");
 
             curl_setopt($ch, CURLOPT_POST, 0);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
